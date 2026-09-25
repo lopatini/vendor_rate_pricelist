@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_pricelist_item_view_inherit_vendor_rate" model="ir.ui.view">
+        <field name="name">product.pricelist.item.view.form.inherit.vendor.rate</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Прив'язуємось до compute_price (унікальний тег у формі,
+                 на відміну від base_pricelist_id, який зустрічається в
+                 арці ДВІЧІ — в блоці 'percentage' і в блоці 'formula').
+                 Поле показуємо, коли встановлено base_pricelist_id —
+                 незалежно від того, який саме режим (percentage чи
+                 formula) його виставив. -->
+            <xpath expr="//field[@name='compute_price']" position="after">
+                <field name="vendor_rate_rule_id" invisible="not base_pricelist_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
