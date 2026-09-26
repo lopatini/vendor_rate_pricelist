@@ -82,7 +82,16 @@ class ProductPricelistItem(models.Model):
             price = product._price_compute(rule_base, uom=uom, date=date)[product.id]
 
         if src_currency != currency:
-            vendor_rule = self.vendor_rate_rule_id
+            # sudo() навмисно: ця гілка рахує ціну для БУДЬ-ЯКОГО
+            # відвідувача сайту, включно з незалогіненим (публічним)
+            # користувачем, а vendor.rate.rule навмисно закрита моделлю
+            # (лише base.group_system). get_commercial_rate() нижче й
+            # сам захищає себе sudo(), але sudo() тут теж — щоб навіть
+            # сама перевірка "чи взагалі вказано правило" (обхід полів
+            # vendor.rate.rule при `if vendor_rule:`) не залежала від
+            # прав користувача, що ініціював розрахунок (виявлено
+            # користувачем 2026-09-26, див. claude/currency_rate_feed.md).
+            vendor_rule = self.vendor_rate_rule_id.sudo()
             if vendor_rule:
                 # Живий комерційний курс вендора (Шар 2) замість
                 # стандартного res.currency.rate (курс НБУ з ядра).

@@ -3,7 +3,7 @@
     "summary": "Живий перерахунок цін у прайслисті сайту за комерційним "
     "курсом вендора (Шар 2, vendor_rate_formula) замість стандартного "
     "курсу валют Odoo",
-    "version": "19.0.1.1.0",
+    "version": "19.0.1.1.1",
     "category": "Sales",
     "author": "Ivan Lopatin",
     "license": "LGPL-3",
